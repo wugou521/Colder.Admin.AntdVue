@@ -1,4 +1,5 @@
 ﻿using Coldairarrow.Business.Primary;
+using Coldairarrow.Entity.DTO;
 using Coldairarrow.Entity.Primary;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,7 @@ namespace Coldairarrow.Api.Controllers.Primary
         #region 获取
 
         [HttpPost]
-        public async Task<PageResult<BuyRecord>> GetDataList(PageInput<ConditionDTO> input)
+        public async Task<PageResult<BuyRecordDTO>> GetDataList(PageInput<ConditionDTO> input)
         {
             return await _buyRecordBus.GetDataListAsync(input);
         }

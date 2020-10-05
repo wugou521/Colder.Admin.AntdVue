@@ -50,6 +50,7 @@ namespace Coldairarrow.Business.Base_Manage
                     from b in ab.DefaultIfEmpty()
                     select @select.Invoke(a, b);
 
+
             q = q.WhereIf(!search.userId.IsNullOrEmpty(), x => x.Id == search.userId);
             if (!search.keyword.IsNullOrEmpty())
             {

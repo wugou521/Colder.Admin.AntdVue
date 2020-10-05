@@ -106,6 +106,7 @@ export default {
         .then(resJson => {
           this.loading = false
           this.data = resJson.Data
+          console.log(this.data)
           const pagination = { ...this.pagination }
           pagination.total = resJson.Total
           this.pagination = pagination

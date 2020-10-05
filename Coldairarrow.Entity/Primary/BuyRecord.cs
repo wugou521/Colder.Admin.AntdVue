@@ -14,26 +14,30 @@ namespace Coldairarrow.Entity.Primary
         /// <summary>
         /// Id
         /// </summary>
-        [Key, Column(Order = 1)]
         public String Id { get; set; }
 
         /// <summary>
-        /// UserId
+        /// 用户编号
         /// </summary>
-        public Int32 UserId { get; set; }
+        public String UserId { get; set; }
 
         /// <summary>
-        /// CreateTime
+        /// 课程ID
+        /// </summary>
+        public String ClassesId { get; set; }
+
+        /// <summary>
+        /// 创建时间
         /// </summary>
         public DateTime? CreateTime { get; set; }
 
         /// <summary>
-        /// ExpireTime
+        /// 过期时间
         /// </summary>
         public DateTime? ExpireTime { get; set; }
 
         /// <summary>
-        /// CreatorId
+        /// 创建人编号
         /// </summary>
         public String CreatorId { get; set; }
 

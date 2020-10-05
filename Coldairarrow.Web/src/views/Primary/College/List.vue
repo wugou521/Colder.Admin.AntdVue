@@ -18,7 +18,7 @@
           <a-col :md="4" :sm="24">
             <a-form-item label="查询类别">
               <a-select allowClear v-model="queryParam.condition">
-                <a-select-option key="CollegeName">CollegeName</a-select-option>
+                <a-select-option key="CollegeName">学院名称</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -64,7 +64,7 @@
 import EditForm from './EditForm'
 
 const columns = [
-  { title: 'CollegeName', dataIndex: 'CollegeName', width: '10%' },
+  { title: '学院名称', dataIndex: 'CollegeName', width: '10%' },
   { title: '操作', dataIndex: 'action', scopedSlots: { customRender: 'action' } }
 ]
 

@@ -9,7 +9,7 @@
   >
     <a-spin :spinning="loading">
       <a-form-model ref="form" :model="entity" :rules="rules" v-bind="layout">
-        <a-form-model-item label="CollegeName" prop="CollegeName">
+        <a-form-model-item label="学院名称" prop="CollegeName">
           <a-input v-model="entity.CollegeName" autocomplete="off" />
         </a-form-model-item>
       </a-form-model>

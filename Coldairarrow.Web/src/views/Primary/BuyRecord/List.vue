@@ -14,14 +14,7 @@
 
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
-        <a-row :gutter="10">
-          <a-col :md="4" :sm="24">
-            <a-form-item label="查询类别">
-              <a-select allowClear v-model="queryParam.condition">
-
-              </a-select>
-            </a-form-item>
-          </a-col>
+        <a-row :gutter="48">
           <a-col :md="4" :sm="24">
             <a-form-item>
               <a-input v-model="queryParam.keyword" placeholder="关键字" />
@@ -64,8 +57,9 @@
 import EditForm from './EditForm'
 
 const columns = [
-  { title: 'UserId', dataIndex: 'UserId', width: '10%' },
-  { title: 'ExpireTime', dataIndex: 'ExpireTime', width: '10%' },
+  { title: '用户手机号', dataIndex: 'Phone', width: '10%' },
+  { title: '课程名称', dataIndex: 'ClassesName', width: '10%' },
+  { title: '过期时间', dataIndex: 'ExpireTime', width: '30%' },
   { title: '操作', dataIndex: 'action', scopedSlots: { customRender: 'action' } }
 ]
 

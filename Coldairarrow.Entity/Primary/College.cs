@@ -18,17 +18,17 @@ namespace Coldairarrow.Entity.Primary
         public String Id { get; set; }
 
         /// <summary>
-        /// CollegeName
+        /// 学院名称
         /// </summary>
         public String CollegeName { get; set; }
 
         /// <summary>
-        /// CreateTime
+        /// 创建时间
         /// </summary>
-        public String CreateTime { get; set; }
+        public DateTime? CreateTime { get; set; }
 
         /// <summary>
-        /// CreatorId
+        /// 创建人编号
         /// </summary>
         public String CreatorId { get; set; }
 

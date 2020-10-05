@@ -18,11 +18,9 @@
           <a-col :md="4" :sm="24">
             <a-form-item label="查询类别">
               <a-select allowClear v-model="queryParam.condition">
-                <a-select-option key="Name">Name</a-select-option>
-                <a-select-option key="UserName">UserName</a-select-option>
-                <a-select-option key="Password">Password</a-select-option>
-                <a-select-option key="Phone">Phone</a-select-option>
-                <a-select-option key="Email">Email</a-select-option>
+                <a-select-option key="UserName">用户名</a-select-option>
+                <a-select-option key="Password">密码</a-select-option>
+                <a-select-option key="Phone">手机号</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -68,12 +66,9 @@
 import EditForm from './EditForm'
 
 const columns = [
-  { title: 'Name', dataIndex: 'Name', width: '10%' },
-  { title: 'UserName', dataIndex: 'UserName', width: '10%' },
-  { title: 'Password', dataIndex: 'Password', width: '10%' },
-  { title: 'Phone', dataIndex: 'Phone', width: '10%' },
-  { title: 'Email', dataIndex: 'Email', width: '10%' },
-  { title: 'IsLock', dataIndex: 'IsLock', width: '10%' },
+  { title: '用户名', dataIndex: 'UserName', width: '10%' },
+  { title: '密码', dataIndex: 'Password', width: '10%' },
+  { title: '手机号', dataIndex: 'Phone', width: '10%' },
   { title: '操作', dataIndex: 'action', scopedSlots: { customRender: 'action' } }
 ]
 

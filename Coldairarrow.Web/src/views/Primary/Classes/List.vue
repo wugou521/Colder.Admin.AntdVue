@@ -8,7 +8,8 @@
         @click="handleDelete(selectedRowKeys)"
         :disabled="!hasSelected()"
         :loading="loading"
-      >删除</a-button>
+        >删除</a-button
+      >
       <a-button type="primary" icon="redo" @click="getDataList()">刷新</a-button>
     </div>
 
@@ -18,9 +19,9 @@
           <a-col :md="4" :sm="24">
             <a-form-item label="查询类别">
               <a-select allowClear v-model="queryParam.condition">
-                <a-select-option key="CollegeId">CollegeId</a-select-option>
-                <a-select-option key="ClassName">ClassName</a-select-option>
-                <a-select-option key="IconUrl">IconUrl</a-select-option>
+                <a-select-option key="CollegeId">学院ID</a-select-option>
+                <a-select-option key="ClassName">班级名称</a-select-option>
+                <a-select-option key="IconUrl">封面图片</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -30,7 +31,16 @@
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
-            <a-button type="primary" @click="() => {this.pagination.current = 1; this.getDataList()}">查询</a-button>
+            <a-button
+              type="primary"
+              @click="
+                () => {
+                  this.pagination.current = 1
+                  this.getDataList()
+                }
+              "
+              >查询</a-button
+            >
             <a-button style="margin-left: 8px" @click="() => (queryParam = {})">重置</a-button>
           </a-col>
         </a-row>
@@ -40,7 +50,7 @@
     <a-table
       ref="table"
       :columns="columns"
-      :rowKey="row => row.Id"
+      :rowKey="(row) => row.Id"
       :dataSource="data"
       :pagination="pagination"
       :loading="loading"
@@ -56,6 +66,11 @@
           <a @click="handleDelete([record.Id])">删除</a>
         </template>
       </span>
+      <span slot="icon" slot-scope="text, record">
+        <template>
+          <img v-if="record.IconUrl" :src="record.IconUrl" height="50" width="50">
+        </template>
+      </span>
     </a-table>
 
     <edit-form ref="editForm" :parentObj="this"></edit-form>
@@ -66,15 +81,15 @@
 import EditForm from './EditForm'
 
 const columns = [
-  { title: 'CollegeId', dataIndex: 'CollegeId', width: '10%' },
-  { title: 'ClassName', dataIndex: 'ClassName', width: '10%' },
-  { title: 'IconUrl', dataIndex: 'IconUrl', width: '10%' },
-  { title: '操作', dataIndex: 'action', scopedSlots: { customRender: 'action' } }
+  { title: '学院名称', dataIndex: 'CollegeName', width: '10%' },
+  { title: '班级名称', dataIndex: 'ClassName', width: '10%' },
+  { title: '封面图片', dataIndex: 'IconUrl', width: '10%', scopedSlots: { customRender: 'icon' } },
+  { title: '操作', dataIndex: 'action', scopedSlots: { customRender: 'action' } },
 ]
 
 export default {
   components: {
-    EditForm
+    EditForm,
   },
   mounted() {
     this.getDataList()
@@ -85,14 +100,14 @@ export default {
       pagination: {
         current: 1,
         pageSize: 10,
-        showTotal: (total, range) => `总数:${total} 当前:${range[0]}-${range[1]}`
+        showTotal: (total, range) => `总数:${total} 当前:${range[0]}-${range[1]}`,
       },
       filters: {},
       sorter: { field: 'Id', order: 'asc' },
       loading: false,
       columns,
       queryParam: {},
-      selectedRowKeys: []
+      selectedRowKeys: [],
     }
   },
   methods: {
@@ -113,9 +128,9 @@ export default {
           SortField: this.sorter.field || 'Id',
           SortType: this.sorter.order,
           Search: this.queryParam,
-          ...this.filters
+          ...this.filters,
         })
-        .then(resJson => {
+        .then((resJson) => {
           this.loading = false
           this.data = resJson.Data
           const pagination = { ...this.pagination }
@@ -141,7 +156,7 @@ export default {
         title: '确认删除吗?',
         onOk() {
           return new Promise((resolve, reject) => {
-            thisObj.$http.post('/Primary/Classes/DeleteData', ids).then(resJson => {
+            thisObj.$http.post('/Primary/Classes/DeleteData', ids).then((resJson) => {
               resolve()
 
               if (resJson.Success) {
@@ -153,9 +168,9 @@ export default {
               }
             })
           })
-        }
+        },
       })
-    }
-  }
+    },
+  },
 }
 </script>

@@ -9,23 +9,14 @@
   >
     <a-spin :spinning="loading">
       <a-form-model ref="form" :model="entity" :rules="rules" v-bind="layout">
-        <a-form-model-item label="Name" prop="Name">
-          <a-input v-model="entity.Name" autocomplete="off" />
-        </a-form-model-item>
-        <a-form-model-item label="UserName" prop="UserName">
+        <a-form-model-item label="用户名" prop="UserName">
           <a-input v-model="entity.UserName" autocomplete="off" />
         </a-form-model-item>
-        <a-form-model-item label="Password" prop="Password">
-          <a-input v-model="entity.Password" autocomplete="off" />
+        <a-form-model-item label="密码" prop="Password">
+          <a-input v-model="entity.Password" type="password" autocomplete="off" />
         </a-form-model-item>
-        <a-form-model-item label="Phone" prop="Phone">
+        <a-form-model-item label="手机号" prop="Phone">
           <a-input v-model="entity.Phone" autocomplete="off" />
-        </a-form-model-item>
-        <a-form-model-item label="Email" prop="Email">
-          <a-input v-model="entity.Email" autocomplete="off" />
-        </a-form-model-item>
-        <a-form-model-item label="IsLock" prop="IsLock">
-          <a-input v-model="entity.IsLock" autocomplete="off" />
         </a-form-model-item>
       </a-form-model>
     </a-spin>

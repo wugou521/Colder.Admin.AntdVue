@@ -1,11 +1,14 @@
-﻿using Coldairarrow.Entity.Primary;
+﻿using Coldairarrow.Entity.DTO;
+using Coldairarrow.Entity.Primary;
 using Coldairarrow.Util;
 using EFCore.Sharding;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Coldairarrow.Business.Primary
@@ -19,21 +22,32 @@ namespace Coldairarrow.Business.Primary
 
         #region 外部接口
 
-        public async Task<PageResult<BuyRecord>> GetDataListAsync(PageInput<ConditionDTO> input)
+        public async Task<PageResult<BuyRecordDTO>> GetDataListAsync(PageInput<ConditionDTO> input)
         {
-            var q = GetIQueryable();
-            var where = LinqHelper.True<BuyRecord>();
-            var search = input.Search;
-
-            //筛选
-            if (!search.Condition.IsNullOrEmpty() && !search.Keyword.IsNullOrEmpty())
+            Expression<Func<BuyRecord, Classes, User, BuyRecordDTO>> select = (a, b, c) => new BuyRecordDTO
             {
-                var newWhere = DynamicExpressionParser.ParseLambda<BuyRecord, bool>(
-                    ParsingConfig.Default, false, $@"{search.Condition}.Contains(@0)", search.Keyword);
-                where = where.And(newWhere);
+                ClassesName = b.ClassName,
+                Phone = c.Phone
+            };
+            select = select.BuildExtendSelectExpre();
+
+            var q = from a in GetIQueryable().AsExpandable()
+                    join b in Db.GetIQueryable<Classes>() on a.ClassesId equals b.Id into ab
+                    from b in ab.DefaultIfEmpty()
+                    join c in Db.GetIQueryable<User>() on a.UserId equals c.Id into ac
+                    from c in ac.DefaultIfEmpty()
+                    select @select.Invoke(a, b, c);
+
+            var search = input.Search;
+            if (!search.Keyword.IsNullOrEmpty())
+            {
+                var keyword = $"%{search.Keyword}%";
+                q = q.Where(x =>
+                      EF.Functions.Like(x.Phone, keyword)
+                      || EF.Functions.Like(x.ClassesName, keyword));
             }
 
-            return await q.Where(where).GetPageResultAsync(input);
+            return await q.GetPageResultAsync(input);
         }
 
         public async Task<BuyRecord> GetTheDataAsync(string id)

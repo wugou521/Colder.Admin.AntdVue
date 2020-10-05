@@ -25,8 +25,8 @@ export default {
     value: '', //字符串或字符串数组
     maxCount: {
       type: Number,
-      default: 1
-    }
+      default: 1,
+    },
   },
   mounted() {
     if (this.maxCount == 1) {
@@ -43,7 +43,7 @@ export default {
       previewVisible: false,
       previewImage: '',
       fileList: [],
-      obj: {}
+      obj: {},
     }
   },
   watch: {
@@ -52,7 +52,7 @@ export default {
 
       this.value = val
       this.refresh()
-    }
+    },
   },
   methods: {
     checkType(val) {
@@ -78,7 +78,7 @@ export default {
           throw 'value必须为字符串或数组'
         }
 
-        this.fileList = urls.map(x => {
+        this.fileList = urls.map((x) => {
           return { name: this.getFileName(x), uid: uuid.v4(), status: 'done', url: x }
         })
       }
@@ -93,7 +93,7 @@ export default {
     },
     handleChange({ fileList }) {
       this.fileList = fileList
-      var urls = this.fileList.filter(x => x.status == 'done').map(x => x.url || x.response.url)
+      var urls = this.fileList.filter((x) => x.status == 'done').map((x) => x.url || x.response.url)
       var newValue = this.maxCount == 1 ? urls[0] : urls
       //双向绑定
       this.$emit('input', newValue)
@@ -106,7 +106,7 @@ export default {
       } else {
         return ''
       }
-    }
-  }
+    },
+  },
 }
 </script>

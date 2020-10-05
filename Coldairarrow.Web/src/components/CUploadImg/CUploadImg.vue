@@ -107,7 +107,6 @@ export default {
         var urls = this.fileList.filter(x => x.status == 'done').map(x => x.url || x.response.url)
         var newValue = this.maxCount == 1 ? urls[0] : urls
         this.internelValue = newValue
-        //双向绑定
         this.$emit('input', newValue)
       }
     }

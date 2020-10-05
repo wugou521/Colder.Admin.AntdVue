@@ -18,44 +18,29 @@ namespace Coldairarrow.Entity.Primary
         public String Id { get; set; }
 
         /// <summary>
-        /// Name
-        /// </summary>
-        public String Name { get; set; }
-
-        /// <summary>
-        /// UserName
+        /// 用户名
         /// </summary>
         public String UserName { get; set; }
 
         /// <summary>
-        /// Password
+        /// 密码
         /// </summary>
         public String Password { get; set; }
 
         /// <summary>
-        /// Phone
+        /// 手机号
         /// </summary>
         public String Phone { get; set; }
 
         /// <summary>
-        /// Email
-        /// </summary>
-        public String Email { get; set; }
-
-        /// <summary>
-        /// CreateTime
+        /// 创建时间
         /// </summary>
         public DateTime? CreateTime { get; set; }
 
         /// <summary>
-        /// CreatorId
+        /// 创建人ID
         /// </summary>
         public String CreatorId { get; set; }
-
-        /// <summary>
-        /// IsLock
-        /// </summary>
-        public Boolean? IsLock { get; set; }
 
     }
 }
