@@ -1,0 +1,12 @@
+获取站点线程运行情况地址：
+GET方式访问：
+http://localhost/api/values/1
+返回结果：{"workerThreads":32759,"completionPortThreads":1000,"threadsCount":133}
+
+最大线程数：workerThreads
+可用线程数线程数：completionPortThreads
+正在使用线程数：threadsCount
+
+备注：
+1、localhost根据环境换成edoc2服务地址
+2、地址最后跟任意数字

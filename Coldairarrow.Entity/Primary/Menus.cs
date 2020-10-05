@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -25,7 +26,7 @@ namespace Coldairarrow.Entity.Primary
         /// <summary>
         /// 状态
         /// </summary>
-        public Boolean? Status { get; set; }
+        public Status Status { get; set; }
 
         /// <summary>
         /// 内容
@@ -42,5 +43,13 @@ namespace Coldairarrow.Entity.Primary
         /// </summary>
         public DateTime? CreateTime { get; set; }
 
+    }
+    public enum Status
+    {
+        [Description("上架")]
+        OnShelf = 1,
+
+        [Description("下架")]
+        OffShelf = 0
     }
 }

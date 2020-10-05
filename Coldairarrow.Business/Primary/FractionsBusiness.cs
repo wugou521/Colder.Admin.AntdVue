@@ -7,6 +7,7 @@ using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
@@ -81,6 +82,43 @@ namespace Coldairarrow.Business.Primary
         public async Task DeleteDataAsync(List<string> ids)
         {
             await DeleteAsync(ids);
+        }
+
+        [Transactional]
+        public async Task UploadFractionsAsync(string filepath)
+        {
+            try
+            {
+                filepath = Path.Combine(System.Environment.CurrentDirectory, "wwwroot", filepath.Substring(filepath.IndexOf("Upload")).Replace("/", "\\"));
+                var data = AsposeOfficeHelper.ReadExcel(filepath);
+                string scheduleId = "";
+                string parentId = "";
+                foreach (System.Data.DataRow item in data.Rows)
+                {
+                    string scheduleName = item[0].ToString();
+                    string parentName = item[1].ToString();
+                    string type = item[2].ToString();
+                    string title = item[3].ToString();
+                    string description = item[4].ToString();
+                    string answer = item[5].ToString();
+                    string a = item[6].ToString();
+                    string b = item[7].ToString();
+                    string c = item[8].ToString();
+                    string d = item[9].ToString();
+                    string analysis = item[10].ToString();
+
+
+                    //var fraction=new Fractions { 
+                        
+                    //}
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
 
         #endregion

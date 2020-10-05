@@ -1,0 +1,3 @@
+/home/edoc2/dockercompose/runner66-D-30004/v/EDoc2.Cache.dll 
+/app/EDoc2.Cache.dll
+docker stack deploy -c docker-compose.yml runner66-D-30004

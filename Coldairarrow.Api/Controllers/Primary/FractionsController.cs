@@ -1,12 +1,15 @@
 ﻿using Coldairarrow.Business.Primary;
 using Coldairarrow.Entity.Primary;
 using Coldairarrow.Util;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Coldairarrow.Api.Controllers.Primary
 {
+
     [Route("/Primary/[controller]/[action]")]
     public class FractionsController : BaseApiController
     {
@@ -60,6 +63,19 @@ namespace Coldairarrow.Api.Controllers.Primary
             await _fractionsBus.DeleteDataAsync(ids);
         }
 
+        /// <summary>
+        /// 上传文件
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task UploadFractions(UploadFractionsDTO data)
+        {
+            System.Console.WriteLine(data.Filepath);
+            data.Filepath = Path.Combine(System.Environment.CurrentDirectory, "wwwroot", data.Filepath.Substring(data.Filepath.IndexOf("Upload")).Replace("/","\\"));
+            System.Console.WriteLine(data.Filepath);
+            await Task.CompletedTask;
+        }
         #endregion
     }
 }

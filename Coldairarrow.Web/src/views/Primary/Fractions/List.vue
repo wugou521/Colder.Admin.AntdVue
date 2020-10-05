@@ -11,10 +11,10 @@
         >删除</a-button
       >
       <a-button type="primary" icon="redo" @click="getDataList()">刷新</a-button>
-      <a-button type="primary" icon="download">下载模板</a-button>
+      <a-button type="primary" icon="download" @click="DownLoadTemplate()">下载模板</a-button>
       <a-form-item label="试题上传" :labelCol="labelCol" :wrapperCol="wrapperCol">
         <c-upload-file v-model="filePath" :maxCount="1"></c-upload-file>
-      <a-button type="danger" icon="to-top">上传</a-button>
+        <a-button type="danger" icon="to-top" @click="UploadFractions()">上传</a-button>
       </a-form-item>
     </div>
 
@@ -71,6 +71,7 @@
 <script>
 import EditForm from './EditForm'
 import CUploadFile from '@/components/CUploadFile/CUploadFile'
+import defaultSettings from '@/config/defaultSettings'
 const columns = [
   { title: '父级标题', dataIndex: 'ParentName', width: '10%' },
   { title: '课程名称', dataIndex: 'SchedulesName', width: '10%' },
@@ -112,6 +113,20 @@ export default {
       this.filters = { ...filters }
       this.sorter = { ...sorter }
       this.getDataList()
+    },
+    DownLoadTemplate() {
+      window.open(defaultSettings.localRootUrl + '/Upload/templates/fraction_upload_template.xlsx', '下载模板')
+    },
+    UploadFractions() {
+      if (!this.filePath || this.filePath.length == 0) {
+        this.$message.error('请上传文件')
+      } else {
+        this.$http.post('/Primary/Fractions/UploadFractions', { filepath: this.filePath }).then((resJson) => {
+          this.loading = false
+          console.log(resJson)
+          alert(resJson)
+        })
+      }
     },
     getDataList() {
       this.selectedRowKeys = []

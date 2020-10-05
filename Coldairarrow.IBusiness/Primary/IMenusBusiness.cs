@@ -20,6 +20,6 @@ namespace Coldairarrow.Business.Primary
         /// <summary>
         /// 状态名称
         /// </summary>
-        public string StatusName { get => Status.Value ? "上架" : "下架"; }
+        public string StatusName { get => Status == Status.OnShelf ? "上架" : "下架"; }
     }
 }
