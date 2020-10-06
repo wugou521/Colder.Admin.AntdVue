@@ -9,6 +9,5 @@ namespace Coldairarrow.Entity
     public enum RoleTypes
     {
         超级管理员 = 1,
-        部门管理员 = 2
     }
 }

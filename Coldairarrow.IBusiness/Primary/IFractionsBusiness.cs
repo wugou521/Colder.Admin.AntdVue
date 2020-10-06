@@ -13,7 +13,7 @@ namespace Coldairarrow.Business.Primary
         Task AddDataAsync(FractionsEditDTO data);
         Task UpdateDataAsync(FractionsEditDTO data);
         Task DeleteDataAsync(List<string> ids);
-        Task UploadFractionsAsync(string filepath);
+        Task<List<KeyValuePair<string, string>>> UploadFractionsAsync(string filepath);
     }
 
     [Map(typeof(Fractions))]

@@ -76,6 +76,30 @@ namespace Coldairarrow.Business.Primary
             return await GetEntityAsync(id);
         }
 
+        public async Task<Schedules> GetTheParentDataAsync(string parentId, int level = 0)
+        {
+            if (level == 0)
+            {
+                return await GetTheDataAsync(parentId);
+            }
+            else
+            {
+                var data = await GetTheDataAsync(parentId);
+                if (data.Level > level)
+                {
+                    if (data.ParentId.IsNullOrEmpty())
+                    {
+                        return null;
+                    }
+                    return await GetTheParentDataAsync(data.ParentId, level);
+                }
+                else
+                {
+                    return await GetTheDataAsync(parentId);
+                }
+            }
+        }
+
         public async Task AddDataAsync(Schedules data)
         {
             await InitData(data);
@@ -109,7 +133,7 @@ namespace Coldairarrow.Business.Primary
             }
             if (!data.ClassesId.IsNullOrEmpty())
             {
-                data.Path = data.Id ;
+                data.Path = data.Id;
                 data.Level = 1;
             }
             else
@@ -117,6 +141,7 @@ namespace Coldairarrow.Business.Primary
                 var parent = await GetTheDataAsync(data.ParentId);
                 data.Path = Path.Combine(parent.Path, data.Id);
                 data.Level = parent.Level + 1;
+                data.ClassesId = parent.ClassesId;
             }
             data.Path += "\\";
             data.Kind = false;

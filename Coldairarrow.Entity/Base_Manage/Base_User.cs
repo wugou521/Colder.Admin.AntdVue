@@ -62,6 +62,11 @@ namespace Coldairarrow.Entity.Base_Manage
         /// 所属部门Id
         /// </summary>
         public String DepartmentId { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Type Type { get; set; }
     }
 
     public enum Sex
@@ -71,5 +76,17 @@ namespace Coldairarrow.Entity.Base_Manage
 
         [Description("女人")]
         Woman = 0
+    }
+
+    public enum Type
+    {
+        [Description("超级管理员")]
+        SuperAdmin = 2,
+
+        [Description("管理员")]
+        Admin = 1,
+
+        [Description("用户")]
+        Customer = 0
     }
 }

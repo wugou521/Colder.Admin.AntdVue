@@ -11,6 +11,7 @@ namespace Coldairarrow.Business.Primary
     {
         Task<List<SchedulesTreeDTO>> GetDataListAsync(PageInput<ConditionDTO> input);
         Task<Schedules> GetTheDataAsync(string id);
+        Task<Schedules> GetTheParentDataAsync(string parentId, int level = 0);
         Task AddDataAsync(Schedules data);
         Task UpdateDataAsync(Schedules data);
         Task DeleteDataAsync(List<string> ids);

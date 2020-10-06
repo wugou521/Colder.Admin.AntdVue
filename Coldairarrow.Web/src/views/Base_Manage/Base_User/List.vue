@@ -61,9 +61,10 @@ import EditForm from './EditForm'
 const columns = [
   { title: '用户名', dataIndex: 'UserName', width: '10%' },
   { title: '姓名', dataIndex: 'RealName', width: '10%' },
-  { title: '性别', dataIndex: 'SexText', width: '5%' },
-  { title: '出生日期', dataIndex: 'BirthdayText', width: '10%' },
-  { title: '所属部门', dataIndex: 'DepartmentName', width: '10%' },
+  // { title: '性别', dataIndex: 'SexText', width: '5%' },
+  { title: '身份类别', dataIndex: 'TypeText', width: '5%' },
+  // { title: '出生日期', dataIndex: 'BirthdayText', width: '10%' },
+  // { title: '所属部门', dataIndex: 'DepartmentName', width: '10%' },
   { title: '所属角色', dataIndex: 'RoleNames', width: '30%' },
   { title: '操作', dataIndex: 'action', scopedSlots: { customRender: 'action' } }
 ]

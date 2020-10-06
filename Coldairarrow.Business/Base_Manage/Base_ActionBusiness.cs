@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Coldairarrow.Entity.Base_Manage;
+using Coldairarrow.IBusiness;
 using Coldairarrow.Util;
 using EFCore.Sharding;
 using Microsoft.EntityFrameworkCore;
@@ -13,28 +14,35 @@ namespace Coldairarrow.Business.Base_Manage
     public class Base_ActionBusiness : BaseBusiness<Base_Action>, IBase_ActionBusiness, ITransientDependency
     {
         readonly IMapper _mapper;
-        public Base_ActionBusiness(IDbAccessor db, IMapper mapper)
+        readonly IOperator _operator;
+        public Base_ActionBusiness(IDbAccessor db, IMapper mapper, IOperator @operator)
             : base(db)
         {
             _mapper = mapper;
+            _operator = @operator;
         }
 
         #region 外部接口
 
         public async Task<List<Base_Action>> GetDataListAsync(Base_ActionsInputDTO input)
         {
+            if (input.ActionIds == null && !_operator.IsAdmin())
+            {
+                return new List<Base_Action>();
+            }
+
             var q = GetIQueryable();
             q = q
                 .WhereIf(!input.parentId.IsNullOrEmpty(), x => x.ParentId == input.parentId)
                 .WhereIf(input.types?.Length > 0, x => input.types.Contains(x.Type))
-                .WhereIf(input.ActionIds?.Length > 0, x => input.ActionIds.Contains(x.Id))
-                ;
+                .WhereIf(input.ActionIds != null, x => input.ActionIds.Contains(x.Id));
 
             return await q.OrderBy(x => x.Sort).ToListAsync();
         }
 
         public async Task<List<Base_ActionDTO>> GetTreeDataListAsync(Base_ActionsInputDTO input)
         {
+
             var qList = await GetDataListAsync(input);
 
             var treeList = qList.Select(x => new Base_ActionDTO

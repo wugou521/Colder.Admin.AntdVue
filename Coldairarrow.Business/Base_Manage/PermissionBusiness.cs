@@ -21,7 +21,7 @@ namespace Coldairarrow.Business.Base_Manage
         IBase_ActionBusiness _actionBus { get; }
         IBase_UserBusiness _userBus { get; }
 
-        async Task<string[]> GetUserActionIds(string userId)
+        public async Task<string[]> GetUserActionIds(string userId)
         {
             var where = LinqHelper.False<Base_Action>();
             var theUser = await _userBus.GetTheDataAsync(userId);

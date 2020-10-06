@@ -28,6 +28,7 @@ namespace Coldairarrow.Entity
         }
         public string DepartmentName { get; set; }
         public string SexText { get => Sex.GetDescription(); }
+        public string TypeText { get => Type.GetDescription(); }
         public string BirthdayText { get => Birthday?.ToString("yyyy-MM-dd"); }
     }
 }

@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using Coldairarrow.Entity;
 using Coldairarrow.Entity.Base_Manage;
+using Coldairarrow.IBusiness;
 using Coldairarrow.Util;
 using EFCore.Sharding;
 using LinqKit;
@@ -16,10 +17,12 @@ namespace Coldairarrow.Business.Base_Manage
     public class Base_RoleBusiness : BaseBusiness<Base_Role>, IBase_RoleBusiness, ITransientDependency
     {
         readonly IMapper _mapper;
-        public Base_RoleBusiness(IDbAccessor db, IMapper mapper)
+        readonly IOperator _operator;
+        public Base_RoleBusiness(IDbAccessor db, IMapper mapper, IOperator @operator)
             : base(db)
         {
             _mapper = mapper;
+            _operator = @operator;
         }
 
         #region 外部接口
@@ -32,6 +35,11 @@ namespace Coldairarrow.Business.Base_Manage
                 where = where.And(x => x.Id == search.roleId);
             if (!search.roleName.IsNullOrEmpty())
                 where = where.And(x => x.RoleName.Contains(search.roleName));
+
+            if (!_operator.IsAdmin())
+            {
+                where = where.And(x => x.RoleName != RoleTypes.超级管理员.ToString());
+            }
 
             var page = await GetIQueryable()
                 .Where(where)
