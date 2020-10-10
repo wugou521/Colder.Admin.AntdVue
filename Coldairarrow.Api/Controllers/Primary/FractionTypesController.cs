@@ -1,4 +1,5 @@
 ﻿using Coldairarrow.Business.Primary;
+using Coldairarrow.Entity.Enum;
 using Coldairarrow.Entity.Primary;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
@@ -58,6 +59,13 @@ namespace Coldairarrow.Api.Controllers.Primary
         public async Task DeleteData(List<string> ids)
         {
             await _fractionTypesBus.DeleteDataAsync(ids);
+        }
+
+
+        [HttpPost]
+        public List<SelectOption> GetFractionTypeList()
+        {
+            return EnumHelper.ToOptionList(typeof(FractionType));
         }
 
         #endregion

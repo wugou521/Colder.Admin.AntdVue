@@ -100,6 +100,29 @@ namespace Coldairarrow.Business.Primary
             }
         }
 
+        public async Task<Schedules> GetChildListDataAsync(string id, string childTitle)
+        {
+            var lists = new List<Schedules>();
+            var childList = GetIQueryable().Where(row => row.ParentId == id);
+            var firstChild = childList.Where(row => row.Title == childTitle).FirstOrDefault();
+            if (firstChild != null)
+            {
+                return firstChild;
+            }
+            else
+            {
+                foreach (var item in childList)
+                {
+                    var data = await GetChildListDataAsync(item.Id, childTitle);
+                    if (data != null)
+                    {
+                        return data;
+                    }
+                }
+            }
+            return null;
+        }
+
         public async Task AddDataAsync(Schedules data)
         {
             await InitData(data);

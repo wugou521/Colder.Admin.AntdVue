@@ -81,7 +81,7 @@
         </a-tab-pane> -->
         </a-tabs>
 
-        <a-form-item style="margin-top:24px">
+        <a-form-item style="margin-top: 24px">
           <a-button size="large" type="primary" htmlType="submit" class="login-button">确定</a-button>
         </a-form-item>
       </a-form>
@@ -97,7 +97,7 @@ export default {
     return {
       loading: false,
       customActiveKey: 'tab1',
-      form: this.$form.createForm(this)
+      form: this.$form.createForm(this),
     }
   },
   mounted() {
@@ -120,7 +120,7 @@ export default {
         if (!errors) {
           var values = this.form.getFieldsValue()
           this.loading = true
-          this.$http.post('/Base_Manage/Home/SubmitLogin', values).then(resJson => {
+          this.$http.post('/Base_Manage/Home/SubmitLogin', values).then((resJson) => {
             this.loading = false
 
             if (resJson.Success) {
@@ -140,8 +140,8 @@ export default {
           })
         }
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

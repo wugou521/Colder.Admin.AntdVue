@@ -71,8 +71,7 @@ namespace Coldairarrow.Api.Controllers.Primary
         [HttpPost]
         public async Task<List<KeyValuePair<string, string>>> UploadFractions(UploadFractionsDTO data)
         {
-            string filePath= Path.Combine(System.Environment.CurrentDirectory, "wwwroot", data.Filepath.Substring(data.Filepath.IndexOf("Upload")).Replace("/","\\"));
-            return await _fractionsBus.UploadFractionsAsync(filePath);
+            return await _fractionsBus.UploadFractionsAsync(data.Filepath);
         }
         #endregion
     }

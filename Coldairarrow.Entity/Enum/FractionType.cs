@@ -12,22 +12,22 @@ namespace Coldairarrow.Entity.Enum
         /// <summary>
         /// 判断题
         /// </summary>
-        TrueOrFalse = 1,
+        判断题 = 1,
         /// <summary>
         /// 单选题
         /// </summary>
-        SingleChoice = 2,
+        单选题 = 2,
         /// <summary>
         /// 多选题
         /// </summary>
-        Multiple = 3,
+        多选题 = 3,
         /// <summary>
         /// 不定项
         /// </summary>
-        Indefinite = 4,
+        不定项父试题 = 4,
         /// <summary>
         /// 不定项子试题
         /// </summary>
-        IndefiniteChild = 5
+        不定项子试题 = 5
     }
 }

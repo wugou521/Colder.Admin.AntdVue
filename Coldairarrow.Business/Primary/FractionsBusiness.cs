@@ -34,7 +34,7 @@ namespace Coldairarrow.Business.Primary
             Expression<Func<Fractions, Schedules, Fractions, FractionsDTO>> select = (a, b, c) => new FractionsDTO
             {
                 ParentName = c.Title,
-                SchedulesName = b.Name
+                SchedulesName = b.Name + " " + b.Title
             };
 
             var search = input.Search;
@@ -85,23 +85,36 @@ namespace Coldairarrow.Business.Primary
         [Transactional]
         public async Task DeleteDataAsync(List<string> ids)
         {
+            Dictionary<string, int> schedules = new Dictionary<string, int>();
             foreach (var item in ids)
             {
                 var data = await GetTheDataAsync(item);
                 var schedule = Db.GetIQueryable<Schedules>().SingleOrDefault(row => row.Id == data.SchedulesId);
-                if (schedule.FracitonCount > 0)
-                {
-                    schedule.FracitonCount--;
-                }
                 var parentSchedule = await _schedulesBusiness.GetTheParentDataAsync(schedule.ParentId, 1);
-                if (parentSchedule.FracitonCount > 0)
+                if (schedules.ContainsKey(schedule.Id))
                 {
-                    parentSchedule.FracitonCount--;
+                    schedules[schedule.Id]++;
                 }
-                await Db.UpdateAsync(schedule);
-                await Db.UpdateAsync(parentSchedule);
+                else
+                {
+                    schedules.Add(schedule.Id, 1);
+                }
+                if (schedules.ContainsKey(parentSchedule.Id))
+                {
+                    schedules[parentSchedule.Id]++;
+                }
+                else
+                {
+                    schedules.Add(parentSchedule.Id, 1);
+                }
             }
             await DeleteAsync(ids);
+            foreach (var item in schedules)
+            {
+                var data = await Db.GetEntityAsync<Schedules>(item.Key);
+                data.FracitonCount -= item.Value;
+                await Db.UpdateAsync(data);
+            }
         }
 
         [Transactional]
@@ -113,6 +126,7 @@ namespace Coldairarrow.Business.Primary
                 var data = AsposeOfficeHelper.ReadExcel(filepath);
                 string scheduleId = "";
                 string topScheduleId = "";
+                string topScheduleName = "";
                 string parentId = "";
                 string scheduleName = "";
                 string parentName = "";
@@ -126,20 +140,27 @@ namespace Coldairarrow.Business.Primary
                 }
                 foreach (System.Data.DataRow item in data.Rows)
                 {
-                    string title = item[3].ToString();
+                    string title = item[4].ToString();
                     try
                     {
-                        //小节是必有的 如果为空则是第一次循环 如果不相等则重新获取
-                        if (scheduleName.IsNullOrEmpty() || scheduleName != item[0].ToString().Trim())
+                        bool topChange = false;
+                        if (topScheduleName.IsNullOrEmpty() || topScheduleName != item[0].ToString().Trim())
                         {
-                            scheduleName = item[0].ToString().Trim();
-                            var schedule = Db.GetIQueryable<Schedules>().FirstOrDefault(row => row.Title == scheduleName);
+                            topScheduleName = item[0].ToString().Trim();
+                            var schedule = Db.GetIQueryable<Schedules>().FirstOrDefault(row => row.Title == topScheduleName);
+                            topScheduleId = schedule.Id;
+                            topChange = true;
+                        }
+
+                        //小节是必有的 如果为空则是第一次循环 如果不相等则重新获取
+                        if (scheduleName.IsNullOrEmpty() || scheduleName != item[1].ToString().Trim() || topChange)
+                        {
+                            scheduleName = item[1].ToString().Trim();
+                            var schedule = await _schedulesBusiness.GetChildListDataAsync(topScheduleId, scheduleName);
                             if (schedule != null)
                             {
                                 scheduleId = schedule.Id;
                                 classesId = schedule.ClassesId;
-                                var onLevelData = await _schedulesBusiness.GetTheParentDataAsync(schedule.ParentId, 1);
-                                topScheduleId = onLevelData.Id;
                             }
                             else
                             {
@@ -148,7 +169,7 @@ namespace Coldairarrow.Business.Primary
                             }
                         }
 
-                        string parentTile = item[1].ToString().Trim();
+                        string parentTile = item[2].ToString().Trim();
                         if (!parentTile.IsNullOrEmpty())
                         {
                             if (parentName != parentTile)
@@ -169,19 +190,19 @@ namespace Coldairarrow.Business.Primary
                         {
                             parentId = null;
                         }
-                        string type = item[2].ToString();
+                        string type = item[3].ToString();
                         if (type.IsNullOrEmpty())
                         {
                             fractionTitles.Add(new KeyValuePair<string, string>(title, $"题目类型错误"));
                             continue;
                         }
-                        string description = item[4].ToString();
-                        string answer = item[5].ToString();
-                        string a = item[6].ToString();
-                        string b = item[7].ToString();
-                        string c = item[8].ToString();
-                        string d = item[9].ToString();
-                        string analysis = item[10].ToString();
+                        string description = item[5].ToString();
+                        string answer = item[6].ToString();
+                        string a = item[7].ToString();
+                        string b = item[8].ToString();
+                        string c = item[9].ToString();
+                        string d = item[10].ToString();
+                        string analysis = item[11].ToString();
 
                         var fraction = new Fractions
                         {
@@ -198,7 +219,7 @@ namespace Coldairarrow.Business.Primary
                             Analysis = analysis,
                             CreateTime = DateTime.Now
                         };
-                        fraction.FractionCount = fractionTypes.FirstOrDefault(row => row.FractionType == fraction.Type)?.FractionCount;
+                        fraction.FractionCount = fractionTypes.FirstOrDefault(row => row.FractionType == fraction.Type && row.ScheduleId == scheduleId)?.FractionCount;
                         if (fraction.Type == 5)
                         {
                             fraction.ParentId = parentId.IsNullOrEmpty() ? null : parentId;

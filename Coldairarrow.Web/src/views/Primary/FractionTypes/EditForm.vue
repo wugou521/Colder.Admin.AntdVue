@@ -13,8 +13,20 @@
   >
     <a-spin :spinning="loading">
       <a-form-model ref="form" :model="entity" :rules="rules" v-bind="layout">
+        <a-form-model-item label="小节名称" prop="ScheduleId">
+          <a-tree-select
+            v-model="entity.ScheduleId"
+            allowClear
+            :treeData="ScheduleList"
+            placeholder="请选择小节"
+            treeDefaultExpandAll
+          ></a-tree-select>
+        </a-form-model-item>
         <a-form-model-item label="试题类型" prop="FractionType">
-          <a-input v-model="entity.FractionType" autocomplete="off" />
+          <a-select v-model="entity.FractionType" allowClear>
+            <a-select-option v-for="item in FractionTypeList" :key="item.text">{{ item.text }}</a-select-option>
+          </a-select>
+          <!-- <a-input v-model="entity.FractionType" autocomplete="off" /> -->
         </a-form-model-item>
         <a-form-model-item label="试题分数" prop="FractionCount">
           <a-input v-model="entity.FractionCount" autocomplete="off" />
@@ -52,6 +64,8 @@ export default {
       entity: {},
       rules: {},
       title: '',
+      FractionTypeList: [],
+      ScheduleList: [],
     }
   },
   methods: {
@@ -60,6 +74,14 @@ export default {
       this.entity = {}
       this.$nextTick(() => {
         this.$refs['form'].clearValidate()
+      })
+      this.$http.post('/Primary/FractionTypes/GetFractionTypeList').then((resJson) => {
+        this.loading = false
+        this.FractionTypeList = resJson.Data
+      })
+      this.$http.post('/Primary/Schedules/GetDataList', {}).then((resJson) => {
+        this.loading = false
+        this.ScheduleList = resJson.Data
       })
     },
     openForm(id, title) {

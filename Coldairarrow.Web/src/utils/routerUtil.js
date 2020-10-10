@@ -121,7 +121,6 @@ const getRouterByUser = () => {
   // return Axios.post('/Base_Manage/Base_Action/GetMenuTreeList')
   return new Promise((resolve, reject) => {
     Axios.post('/Base_Manage/Home/GetOperatorMenuList', {}).then(resJson => {
-      debugger
       if (resJson.Success) {
         resolve(resJson.Data)
       }

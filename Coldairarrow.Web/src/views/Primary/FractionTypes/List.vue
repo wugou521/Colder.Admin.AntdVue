@@ -64,6 +64,7 @@
 import EditForm from './EditForm'
 
 const columns = [
+  { title: '小节名称', dataIndex: 'ScheduleName', width: '10%' },
   { title: '题目类型', dataIndex: 'FractionTypeName', width: '10%' },
   { title: '题目分数', dataIndex: 'FractionCount', width: '10%' },
   { title: '状态', dataIndex: 'IsHiddenName', width: '10%' },

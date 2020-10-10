@@ -15,6 +15,7 @@ namespace Coldairarrow.Business.Primary
         Task AddDataAsync(Schedules data);
         Task UpdateDataAsync(Schedules data);
         Task DeleteDataAsync(List<string> ids);
+        Task<Schedules> GetChildListDataAsync(string id, string childTitle);
     }
 
     public class SchedulesTreeDTO : TreeModel

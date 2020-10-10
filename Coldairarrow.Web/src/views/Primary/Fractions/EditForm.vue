@@ -182,8 +182,6 @@ export default {
           return
         }
         this.loading = true
-        console.log(this.entity)
-        debugger
         this.$http.post('/Primary/Fractions/SaveData', this.entity).then((resJson) => {
           this.loading = false
 

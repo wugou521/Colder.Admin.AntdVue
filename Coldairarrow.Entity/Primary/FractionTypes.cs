@@ -42,5 +42,10 @@ namespace Coldairarrow.Entity.Primary
         /// </summary>
         public Decimal? LessCount { get; set; }
 
+        /// <summary>
+        /// ScheduleId
+        /// </summary>
+        public String ScheduleId { get; set; }
+
     }
 }
