@@ -67,7 +67,7 @@ const columns = [
   { title: '小节名称', dataIndex: 'ScheduleName', width: '10%' },
   { title: '题目类型', dataIndex: 'FractionTypeName', width: '10%' },
   { title: '题目分数', dataIndex: 'FractionCount', width: '10%' },
-  { title: '状态', dataIndex: 'IsHiddenName', width: '10%' },
+  // { title: '状态', dataIndex: 'IsHiddenName', width: '10%' },
   { title: '错题扣分', dataIndex: 'WrongCount', width: '10%' },
   { title: '少选得分', dataIndex: 'LessCount', width: '10%' },
   { title: '操作', dataIndex: 'action', scopedSlots: { customRender: 'action' } }

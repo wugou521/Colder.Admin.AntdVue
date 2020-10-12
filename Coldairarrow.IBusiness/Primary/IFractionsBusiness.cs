@@ -3,6 +3,7 @@ using Coldairarrow.Util;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using Coldairarrow.Entity.Enum;
 
 namespace Coldairarrow.Business.Primary
 {
@@ -23,7 +24,7 @@ namespace Coldairarrow.Business.Primary
         {
             get
             {
-                if (Type != 1)
+                if (Type != FractionType.判断题)
                 {
                     return Answer.IsNullOrEmpty() ? new List<string>() : Answer.Replace("1", "A").Replace("2", "B").Replace("3", "C").Replace("4", "D").Split(',').ToList();
                 }
@@ -35,7 +36,7 @@ namespace Coldairarrow.Business.Primary
         }
         public string ParentName { get; set; }
         public string SchedulesName { get; set; }
-        public string TypeName { get => Type == 1 ? "判断题" : Type == 2 ? "单选题" : Type == 3 ? "多选题" : Type == 4 ? "不定项" : Type == 5 ? "不定项子试题" : ""; }
+        public string TypeName { get => Type.GetDescription(); }
     }
 
     [Map(typeof(Fractions))]
@@ -45,7 +46,7 @@ namespace Coldairarrow.Business.Primary
         {
             get
             {
-                if (Type != 1 && Type != 2)
+                if (Type != FractionType.判断题 && Type != FractionType.单选题)
                 {
                     return Answer.IsNullOrEmpty() ? new List<string>() : Answer.Replace("A", "1").Replace("B", "2").Replace("C", "3").Replace("D", "4").Split(',').ToList();
                 }

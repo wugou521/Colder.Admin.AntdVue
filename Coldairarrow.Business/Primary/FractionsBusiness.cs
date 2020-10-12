@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Coldairarrow.Entity.Enum;
 using Coldairarrow.Entity.Primary;
 using Coldairarrow.Util;
 using EFCore.Sharding;
@@ -49,7 +50,7 @@ namespace Coldairarrow.Business.Primary
                     select @select.Invoke(a, b, c);
 
             q = q.WhereIf(!search.SchedulesId.IsNullOrEmpty(), row => row.SchedulesId == search.SchedulesId);
-            q = q.WhereIf(!search.FractionType.IsNullOrEmpty() && search.FractionType != 0, row => row.Type == search.FractionType);
+            //q = q.WhereIf(!search.FractionType.IsNullOrEmpty() && search.FractionType != 0, row => row.Type == search.FractionType);
             q = q.WhereIf(!search.Keyword.IsNullOrEmpty(), row => row.Title.Contains(search.Keyword));
 
             return await q.GetPageResultAsync(input);
@@ -133,8 +134,8 @@ namespace Coldairarrow.Business.Primary
                 string classesId = "";
                 List<KeyValuePair<string, string>> fractionTitles = new List<KeyValuePair<string, string>>();
                 Dictionary<string, int> schedules = new Dictionary<string, int>();
-                var fractionTypes = Db.GetIQueryable<FractionTypes>().ToList();
-                if (fractionTypes.Count <= 0)
+                var fractionTypes = Db.GetIQueryable<FractionTypes>();
+                if (fractionTypes.Count() <= 0)
                 {
                     throw new Exception("题目类型数据为空");
                 }
@@ -156,7 +157,8 @@ namespace Coldairarrow.Business.Primary
                         if (scheduleName.IsNullOrEmpty() || scheduleName != item[1].ToString().Trim() || topChange)
                         {
                             scheduleName = item[1].ToString().Trim();
-                            var schedule = await _schedulesBusiness.GetChildListDataAsync(topScheduleId, scheduleName);
+
+                            var schedule = Db.GetIQueryable<Schedules>().FirstOrDefault(row => row.Path.Contains(topScheduleId) && row.Title == scheduleName);
                             if (schedule != null)
                             {
                                 scheduleId = schedule.Id;
@@ -203,7 +205,6 @@ namespace Coldairarrow.Business.Primary
                         string c = item[9].ToString();
                         string d = item[10].ToString();
                         string analysis = item[11].ToString();
-
                         var fraction = new Fractions
                         {
                             Id = IdHelper.GetId(),
@@ -211,7 +212,7 @@ namespace Coldairarrow.Business.Primary
                             Title = title,
                             Description = description,
                             Answer = answer,
-                            Type = type == "判断题" ? 1 : type == "单选题" ? 2 : type == "多选题" ? 3 : type == "不定项父题" ? 4 : type == "不定项子题" ? 5 : 0,
+                            Type = (FractionType)Enum.Parse(typeof(FractionType), type),
                             A = a,
                             B = b,
                             C = c,
@@ -220,11 +221,11 @@ namespace Coldairarrow.Business.Primary
                             CreateTime = DateTime.Now
                         };
                         fraction.FractionCount = fractionTypes.FirstOrDefault(row => row.FractionType == fraction.Type && row.ScheduleId == scheduleId)?.FractionCount;
-                        if (fraction.Type == 5)
+                        if (fraction.Type == FractionType.不定项子题)
                         {
                             fraction.ParentId = parentId.IsNullOrEmpty() ? null : parentId;
                         }
-                        else if (fraction.Type == 4)
+                        else if (fraction.Type == FractionType.不定项父题)
                         {
                             parentId = fraction.Id;
                         }
@@ -291,7 +292,11 @@ namespace Coldairarrow.Business.Primary
         /// <returns></returns>
         private string ChangeAnswerType(string answer, int type)
         {
-            if (type != 1)
+            if (answer.IsNullOrEmpty())
+            {
+                return string.Empty;
+            }
+            if (type != (int)FractionType.判断题)
             {
                 return answer.Replace("1", "A").Replace("2", "B").Replace("3", "C").Replace("4", "D");
             }

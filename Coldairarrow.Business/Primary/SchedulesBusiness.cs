@@ -103,7 +103,7 @@ namespace Coldairarrow.Business.Primary
         public async Task<Schedules> GetChildListDataAsync(string id, string childTitle)
         {
             var lists = new List<Schedules>();
-            var childList = GetIQueryable().Where(row => row.ParentId == id);
+            var childList =Db.GetIQueryable<Schedules>().Where(row => row.ParentId == id);
             var firstChild = childList.Where(row => row.Title == childTitle).FirstOrDefault();
             if (firstChild != null)
             {

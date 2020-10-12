@@ -22,21 +22,23 @@
             treeDefaultExpandAll
           ></a-tree-select>
         </a-form-model-item>
-        <a-form-model-item label="试题类型" prop="FractionType">
-          <a-select v-model="entity.FractionType" allowClear>
-            <a-select-option v-for="item in FractionTypeList" :key="item.text">{{ item.text }}</a-select-option>
-          </a-select>
-          <!-- <a-input v-model="entity.FractionType" autocomplete="off" /> -->
+        <a-form-model-item label="身份种类" prop="FractionType">
+          <a-radio-group v-model="entity.FractionType">
+            <a-radio :value="1">判断题</a-radio>
+            <a-radio :value="2">单选题</a-radio>
+            <a-radio :value="3">多选题</a-radio>
+            <a-radio :value="5">不定项子试题</a-radio>
+          </a-radio-group>
         </a-form-model-item>
         <a-form-model-item label="试题分数" prop="FractionCount">
           <a-input v-model="entity.FractionCount" autocomplete="off" />
         </a-form-model-item>
-        <a-form-model-item label="是否隐藏" prop="IsHidden">
+        <!-- <a-form-model-item label="是否隐藏" prop="IsHidden">
           <a-radio-group v-model="entity.IsHidden">
             <a-radio :value="0">否</a-radio>
             <a-radio :value="1">是</a-radio>
           </a-radio-group>
-        </a-form-model-item>
+        </a-form-model-item> -->
         <a-form-model-item label="错题扣分" prop="WrongCount">
           <a-input v-model="entity.WrongCount" autocomplete="off" />
         </a-form-model-item>

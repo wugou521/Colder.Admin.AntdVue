@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Coldairarrow.Entity.Enum;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -50,7 +51,7 @@ namespace Coldairarrow.Entity.Primary
         /// <summary>
         /// 题目类型
         /// </summary>
-        public Int32? Type { get; set; }
+        public FractionType Type { get; set; }
 
         /// <summary>
         /// 题目分数

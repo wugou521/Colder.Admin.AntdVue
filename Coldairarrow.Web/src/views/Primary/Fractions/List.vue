@@ -73,8 +73,8 @@ import EditForm from './EditForm'
 import CUploadFile from '@/components/CUploadFile/CUploadFile'
 import defaultSettings from '@/config/defaultSettings'
 const columns = [
-  { title: '父级标题', dataIndex: 'ParentName', width: '10%' },
   { title: '章节名称', dataIndex: 'SchedulesName', width: '30%' },
+  { title: '父级标题', dataIndex: 'ParentName', width: '10%' },
   { title: '题目标题', dataIndex: 'Title', width: '10%' },
   // { title: '题目描述', dataIndex: 'Description', width: '10%' },
   { title: '题目答案', dataIndex: 'AnswerList', width: '10%' },

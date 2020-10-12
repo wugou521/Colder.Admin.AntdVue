@@ -5,9 +5,11 @@ using Coldairarrow.Util;
 using EFCore.Sharding;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Coldairarrow.Business.Primary
@@ -25,19 +27,28 @@ namespace Coldairarrow.Business.Primary
 
         public async Task<PageResult<FractionTypesDTO>> GetDataListAsync(PageInput<ConditionDTO> input)
         {
-            var q = GetIQueryable();
-            var where = LinqHelper.True<FractionTypes>();
-            var search = input.Search;
-
-            //筛选
-            if (!search.Condition.IsNullOrEmpty() && !search.Keyword.IsNullOrEmpty())
+            Expression<Func<FractionTypes, Schedules, FractionTypesDTO>> select = (a, b) => new FractionTypesDTO
             {
-                var newWhere = DynamicExpressionParser.ParseLambda<FractionTypes, bool>(
-                    ParsingConfig.Default, false, $@"{search.Condition}.Contains(@0)", search.Keyword);
-                where = where.And(newWhere);
+                ScheduleName = b.Name
+            };
+
+            var search = input.Search;
+            select = select.BuildExtendSelectExpre();
+
+            var q = from a in GetIQueryable().AsExpandable()
+                    join b in Db.GetIQueryable<Schedules>() on a.ScheduleId equals b.Id into ab
+                    from b in ab.DefaultIfEmpty()
+                    select @select.Invoke(a, b);
+
+            if (!search.Keyword.IsNullOrEmpty())
+            {
+                var keyword = $"%{search.Keyword}%";
+                q = q.Where(x =>
+                      EF.Functions.Like(x.ScheduleId, keyword)
+                      || EF.Functions.Like(x.FractionTypeName, keyword));
             }
 
-            return await q.Where(where).ProjectTo<FractionTypesDTO>(_mapper.ConfigurationProvider).GetPageResultAsync(input);
+            return await q.GetPageResultAsync(input);
         }
 
         public async Task<FractionTypes> GetTheDataAsync(string id)

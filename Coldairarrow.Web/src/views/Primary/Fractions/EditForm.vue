@@ -28,12 +28,12 @@
             <a-select-option :key="1">判断题</a-select-option>
             <a-select-option :key="2">单选题</a-select-option>
             <a-select-option :key="3">多选题</a-select-option>
-            <a-select-option :key="4">不定项</a-select-option>
-            <a-select-option :key="5">不定项子试题</a-select-option>
+            <a-select-option :key="4">不定项父题</a-select-option>
+            <a-select-option :key="5">不定项子题</a-select-option>
           </a-select>
         </a-form-model-item>
         <block v-show="entity.Type == 5 && entity.Type != null">
-          <a-form-model-item label="不定项父试题" prop="ParentId">
+          <a-form-model-item label="不定项父题" prop="ParentId">
             <a-select v-model="entity.ParentId" allowClear>
               <a-select-option v-for="item in ParentFractions" :key="item.Id">{{ item.Title }}</a-select-option>
             </a-select>
