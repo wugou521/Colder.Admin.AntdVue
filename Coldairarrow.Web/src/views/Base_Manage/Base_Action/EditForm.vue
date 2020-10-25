@@ -25,6 +25,8 @@
           <a-radio-group v-model="entity.Type">
             <a-radio :value="0">菜单</a-radio>
             <a-radio :value="1">页面</a-radio>
+            <a-radio :value="3">WEB</a-radio>
+            <a-radio :value="4">H5</a-radio>
           </a-radio-group>
         </a-form-model-item>
         <a-form-model-item label="路径" prop="Url">
